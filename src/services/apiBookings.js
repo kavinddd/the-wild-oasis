@@ -131,7 +131,7 @@ export async function getStaysTodayActivity() {
     .from("bookings")
     .select("*, guests(full_name, nationality, country_flag)")
     .or(
-      `and(status.eq.unconfirmed,start_date.eq.${getToday()}),and(status.eq.checked-in,end_date.eq.${getToday()})`,
+      `and(status.eq.unconfirmed, start_date.eq.${getToday()}),and(status.eq.checked-in, end_date.eq.${getToday()})`,
     )
     .order("created_at");
 
@@ -143,7 +143,31 @@ export async function getStaysTodayActivity() {
     console.error(error);
     throw new Error("Bookings could not get loaded");
   }
-  return data;
+
+  console.log(data);
+
+  return data.map((it) => ({
+    id: it.id,
+    createAt: it.created_at,
+    startDate: it.start_date,
+    endDate: it.end_date,
+    numNights: it.num_nights,
+    numGuests: it.num_guests,
+    cabinPrice: it.cabin_price,
+    extrasPrice: it.extras_price,
+    totalPrice: it.total_price,
+    status: it.status,
+    hasBreakfast: it.has_breakfast,
+    isPaid: it.is_paid,
+    observations: it.observations,
+    cabinId: it.cabin_id,
+    guestId: it.guest_id,
+    guests: {
+      fullName: it.guests.full_name,
+      nationality: it.guests.nationality,
+      countryFlag: it.guests.country_flag,
+    },
+  }));
 }
 
 export async function updateBooking(id, obj) {
