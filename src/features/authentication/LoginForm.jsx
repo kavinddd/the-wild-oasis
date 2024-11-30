@@ -9,8 +9,8 @@ import CabinTable from "../cabins/CabinTable";
 
 function LoginForm() {
   const { login, isLoggingIn } = useLogin();
-  const [email, setEmail] = useState("prommest@example.com");
-  const [password, setPassword] = useState("123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
